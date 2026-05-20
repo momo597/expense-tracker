@@ -4,10 +4,13 @@ import com.momo.expense_tracker.dto.ExpenseRequest;
 import com.momo.expense_tracker.dto.ExpenseResponse;
 import com.momo.expense_tracker.dto.SummaryResponse;
 import com.momo.expense_tracker.service.ExpenseService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/expenses")
+@Tag(name = "Expenses", description = "Expense management endpoints")
 public class ExpenseController {
 
   private final ExpenseService expenseService;
@@ -31,12 +35,13 @@ public class ExpenseController {
   }
 
   @GetMapping
-  public ResponseEntity<List<ExpenseResponse>> getAllExpenses(
+  public ResponseEntity<Page<ExpenseResponse>> getAllExpenses(
       @RequestParam(required = false) String category,
       @RequestParam(required = false) LocalDate startDate,
-      @RequestParam(required = false) LocalDate endDate) {
+      @RequestParam(required = false) LocalDate endDate,
+      Pageable pageable) {
     return ResponseEntity.status(HttpStatus.OK)
-        .body(expenseService.getAllExpenses(category, startDate, endDate));
+        .body(expenseService.getAllExpenses(category, startDate, endDate, pageable));
   }
 
   @GetMapping("/{id}")

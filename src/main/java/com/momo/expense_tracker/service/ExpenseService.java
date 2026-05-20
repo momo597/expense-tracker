@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,17 +39,17 @@ public class ExpenseService {
     return convertToResponseDTO(saved);
   }
 
-  public List<ExpenseResponse> getAllExpenses(
-      String category, LocalDate startDate, LocalDate endDate) {
+  public Page<ExpenseResponse> getAllExpenses(
+      String category, LocalDate startDate, LocalDate endDate, Pageable pageable) {
 
-    return expenseRepository
-        .findFiltered(
+    Page<Expense> expenses =
+        expenseRepository.findFiltered(
             category != null ? ExpenseCategory.valueOf(category.toUpperCase()) : null,
             startDate,
-            endDate)
-        .stream()
-        .map(expense -> convertToResponseDTO(expense))
-        .toList();
+            endDate,
+            pageable);
+
+    return expenses.map(expense -> convertToResponseDTO(expense));
   }
 
   public ExpenseResponse getExpenseById(UUID id) {
@@ -111,7 +113,7 @@ public class ExpenseService {
             expense.getId(),
             expense.getAmount(),
             expense.getName(),
-            expense.getCategory(),
+            expense.getCategory().toString(),
             expense.getDate(),
             expense.getCreatedAt(),
             expense.getUpdatedAt());
@@ -122,7 +124,7 @@ public class ExpenseService {
   private Expense convertToExpense(ExpenseRequest expenseRequest, Expense expense) {
 
     expense.setAmount(expenseRequest.getAmount());
-    expense.setCategory(expenseRequest.getCategory());
+    expense.setCategory(ExpenseCategory.valueOf(expenseRequest.getCategory().toUpperCase()));
     expense.setDescription(expenseRequest.getDescription());
     expense.setName(expenseRequest.getName());
     expense.setDate(expenseRequest.getDate());

@@ -14,6 +14,14 @@ spring:
       path: /h2-console
       settings:
         web-allow-others: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
 
 server:
   port: 8080

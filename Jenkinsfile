@@ -21,7 +21,7 @@ pipeline{
 
         stage('Docker Build'){
             steps{
-                sh "docker build -t expense-tracker:${env.BUILD_NUMBER} ."
+                docker.build("expense-tracker:${env.BUILD_NUMBER}")
             }
         }
     }

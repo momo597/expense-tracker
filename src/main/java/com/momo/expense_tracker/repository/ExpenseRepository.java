@@ -28,7 +28,9 @@ public interface ExpenseRepository extends JpaRepository<Expense, UUID> {
   List<Object[]> summaryByCategory();
 
   @Query(
-      "SELECT FORMATDATETIME(e.date, 'yyyy-MM'), SUM(e.amount), COUNT(e) "
-          + "FROM Expense e GROUP BY FORMATDATETIME(e.date, 'yyyy-MM')")
+      value =
+          "SELECT TO_CHAR(e.date, 'YYYY-MM'), SUM(e.amount), COUNT(e.id) "
+              + "FROM expenses e GROUP BY TO_CHAR(e.date, 'YYYY-MM')",
+      nativeQuery = true)
   List<Object[]> summaryByMonth();
 }

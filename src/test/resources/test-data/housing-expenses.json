@@ -1,0 +1,30 @@
+[
+  {
+    "amount": 850.00,
+    "name": "Monthly rent",
+    "category": "HOUSING",
+    "date": "2025-01-01",
+    "description": "January rent"
+  },
+  {
+    "amount": 850.00,
+    "name": "Monthly rent",
+    "category": "HOUSING",
+    "date": "2025-02-01",
+    "description": "February rent"
+  },
+  {
+    "amount": 120.00,
+    "name": "Home repair",
+    "category": "HOUSING",
+    "date": "2025-03-10",
+    "description": "Plumber for kitchen sink"
+  },
+  {
+    "amount": 850.00,
+    "name": "Monthly rent",
+    "category": "HOUSING",
+    "date": "2025-04-01",
+    "description": "April rent"
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "amount": 25.00,
+    "name": "Doctor visit",
+    "category": "MEDICAL",
+    "date": "2025-01-28",
+    "description": "General checkup"
+  },
+  {
+    "amount": 18.50,
+    "name": "Pharmacy",
+    "category": "MEDICAL",
+    "date": "2025-02-10",
+    "description": "Cold medicine"
+  },
+  {
+    "amount": 150.00,
+    "name": "Dentist",
+    "category": "MEDICAL",
+    "date": "2025-03-05",
+    "description": "Cleaning and checkup"
+  }
+]

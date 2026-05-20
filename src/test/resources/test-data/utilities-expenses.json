@@ -1,0 +1,30 @@
+[
+  {
+    "amount": 85.00,
+    "name": "Electricity bill",
+    "category": "UTILITIES",
+    "date": "2025-01-20",
+    "description": "January electricity"
+  },
+  {
+    "amount": 40.00,
+    "name": "Internet subscription",
+    "category": "UTILITIES",
+    "date": "2025-02-01",
+    "description": "Monthly fiber"
+  },
+  {
+    "amount": 92.00,
+    "name": "Electricity bill",
+    "category": "UTILITIES",
+    "date": "2025-03-20",
+    "description": "March electricity - heating spike"
+  },
+  {
+    "amount": 25.00,
+    "name": "Water bill",
+    "category": "UTILITIES",
+    "date": "2025-04-05",
+    "description": null
+  }
+]

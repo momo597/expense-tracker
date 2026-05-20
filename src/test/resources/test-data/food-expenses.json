@@ -1,0 +1,30 @@
+[
+  {
+    "amount": 12.50,
+    "name": "Lunch at cafe",
+    "category": "FOOD",
+    "date": "2025-01-15",
+    "description": "Quick lunch break"
+  },
+  {
+    "amount": 45.00,
+    "name": "Weekly groceries",
+    "category": "FOOD",
+    "date": "2025-02-03",
+    "description": "Vegetables and fruits"
+  },
+  {
+    "amount": 8.90,
+    "name": "Coffee and pastry",
+    "category": "FOOD",
+    "date": "2025-03-22",
+    "description": null
+  },
+  {
+    "amount": 62.30,
+    "name": "Dinner with friends",
+    "category": "FOOD",
+    "date": "2025-04-10",
+    "description": "Birthday dinner"
+  }
+]

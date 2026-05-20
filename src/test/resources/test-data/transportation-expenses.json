@@ -1,0 +1,30 @@
+[
+  {
+    "amount": 50.00,
+    "name": "Monthly metro pass",
+    "category": "TRANSPORTATION",
+    "date": "2025-01-05",
+    "description": "January pass"
+  },
+  {
+    "amount": 35.00,
+    "name": "Uber ride",
+    "category": "TRANSPORTATION",
+    "date": "2025-02-14",
+    "description": "Airport transfer"
+  },
+  {
+    "amount": 50.00,
+    "name": "Monthly metro pass",
+    "category": "TRANSPORTATION",
+    "date": "2025-03-01",
+    "description": "March pass"
+  },
+  {
+    "amount": 22.50,
+    "name": "Gas station",
+    "category": "TRANSPORTATION",
+    "date": "2025-04-18",
+    "description": null
+  }
+]

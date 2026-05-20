@@ -1,0 +1,30 @@
+[
+  {
+    "amount": 15.99,
+    "name": "Netflix subscription",
+    "category": "ENTERTAINMENT",
+    "date": "2025-01-01",
+    "description": "Monthly streaming"
+  },
+  {
+    "amount": 30.00,
+    "name": "Concert tickets",
+    "category": "ENTERTAINMENT",
+    "date": "2025-02-22",
+    "description": "Local jazz show"
+  },
+  {
+    "amount": 12.00,
+    "name": "Cinema",
+    "category": "ENTERTAINMENT",
+    "date": "2025-03-15",
+    "description": "New release movie"
+  },
+  {
+    "amount": 55.00,
+    "name": "Escape room",
+    "category": "ENTERTAINMENT",
+    "date": "2025-04-28",
+    "description": "Team outing"
+  }
+]

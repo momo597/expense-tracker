@@ -1,11 +1,31 @@
 package com.momo.expense_tracker.repository;
 
-import java.util.UUID;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.momo.expense_tracker.model.Expense;
+import com.momo.expense_tracker.utilities.ExpenseCategory;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface ExpenseRepository extends JpaRepository<Expense, UUID> {
 
+  @Query(
+      "SELECT e FROM Expense e WHERE "
+          + "(:category IS NULL OR e.category = :category) AND "
+          + "(:startDate IS NULL OR e.date >= :startDate) AND "
+          + "(:endDate IS NULL OR e.date <= :endDate)")
+  List<Expense> findFiltered(
+      @Param("category") ExpenseCategory category,
+      @Param("startDate") LocalDate startDate,
+      @Param("endDate") LocalDate endDate);
+
+  @Query("SELECT e.category, SUM(e.amount), COUNT(e) FROM Expense e " + "GROUP BY e.category")
+  List<Object[]> summaryByCategory();
+
+  @Query(
+      "SELECT FORMATDATETIME(e.date, 'yyyy-MM'), SUM(e.amount), COUNT(e) "
+          + "FROM Expense e GROUP BY FORMATDATETIME(e.date, 'yyyy-MM')")
+  List<Object[]> summaryByMonth();
 }

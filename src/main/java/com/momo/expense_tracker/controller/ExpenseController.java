@@ -2,8 +2,10 @@ package com.momo.expense_tracker.controller;
 
 import com.momo.expense_tracker.dto.ExpenseRequest;
 import com.momo.expense_tracker.dto.ExpenseResponse;
+import com.momo.expense_tracker.dto.SummaryResponse;
 import com.momo.expense_tracker.service.ExpenseService;
 import jakarta.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,17 +31,24 @@ public class ExpenseController {
   }
 
   @GetMapping
-  public ResponseEntity<List<ExpenseResponse>> getAllExpenses() {
-    return ResponseEntity.status(HttpStatus.OK).body(expenseService.getAllExpenses());
+  public ResponseEntity<List<ExpenseResponse>> getAllExpenses(
+      @RequestParam(required = false) String category,
+      @RequestParam(required = false) LocalDate startDate,
+      @RequestParam(required = false) LocalDate endDate) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(expenseService.getAllExpenses(category, startDate, endDate));
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<ExpenseResponse> getExpenseById(@PathVariable UUID id) {
-    try {
-      return ResponseEntity.status(HttpStatus.OK).body(expenseService.getExpenseById(id));
-    } catch (Exception e) {
-      return ResponseEntity.notFound().build();
-    }
+    return ResponseEntity.status(HttpStatus.OK).body(expenseService.getExpenseById(id));
+  }
+
+  @GetMapping("/summary")
+  public ResponseEntity<List<SummaryResponse>> getSummary(
+      @RequestParam(required = false) String option) {
+
+    return ResponseEntity.status(HttpStatus.OK).body(expenseService.getSummary(option));
   }
 
   @PostMapping
@@ -53,22 +63,14 @@ public class ExpenseController {
   public ResponseEntity<ExpenseResponse> updateExpense(
       @PathVariable UUID id, @Valid @RequestBody ExpenseRequest expenseRequest) {
 
-    try {
-      return ResponseEntity.status(HttpStatus.OK)
-          .body(expenseService.updateExpense(id, expenseRequest));
-    } catch (Exception e) {
-      return ResponseEntity.notFound().build();
-    }
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(expenseService.updateExpense(id, expenseRequest));
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteExpense(@PathVariable UUID id) {
 
-    try {
-      expenseService.deleteExpense(id);
-      return ResponseEntity.noContent().build();
-    } catch (Exception e) {
-      return ResponseEntity.notFound().build();
-    }
+    expenseService.deleteExpense(id);
+    return ResponseEntity.noContent().build();
   }
 }

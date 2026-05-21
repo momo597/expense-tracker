@@ -25,7 +25,9 @@ services:
       - db
 
   jenkins:
-    image: jenkins/jenkins:lts
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
     ports:
     - "9090:8080"
     - "50000:50000"
@@ -33,6 +35,20 @@ services:
     - jenkins_home:/var/jenkins_home
     - /var/run/docker.sock:/var/run/docker.sock
     user: root
+
+  promotheus:
+    image: prom/prometheus
+    ports:
+      - "9091:9090"
+    volumes: 
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+  
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
 
 volumes:
   pgdata:

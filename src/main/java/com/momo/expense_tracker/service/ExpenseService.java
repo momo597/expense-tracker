@@ -6,6 +6,7 @@ import com.momo.expense_tracker.dto.SummaryResponse;
 import com.momo.expense_tracker.exception.RessourceNotFoundException;
 import com.momo.expense_tracker.model.Expense;
 import com.momo.expense_tracker.repository.ExpenseRepository;
+import com.momo.expense_tracker.utilities.ConvertDTOs;
 import com.momo.expense_tracker.utilities.ExpenseCategory;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -29,14 +30,14 @@ public class ExpenseService {
     // Map request DTO to entity
     Expense expense = new Expense();
 
-    convertToExpense(expenseRequest, expense);
+    ConvertDTOs.convertToExpense(expenseRequest, expense);
 
     // Save to DB
     Expense saved = expenseRepository.save(expense);
 
     // Map saved entity to response DTO
 
-    return convertToResponseDTO(saved);
+    return ConvertDTOs.convertToResponseDTO(saved);
   }
 
   public Page<ExpenseResponse> getAllExpenses(
@@ -49,13 +50,13 @@ public class ExpenseService {
             endDate,
             pageable);
 
-    return expenses.map(expense -> convertToResponseDTO(expense));
+    return expenses.map(expense -> ConvertDTOs.convertToResponseDTO(expense));
   }
 
   public ExpenseResponse getExpenseById(UUID id) {
     return expenseRepository
         .findById(id)
-        .map(expense -> convertToResponseDTO(expense))
+        .map(expense -> ConvertDTOs.convertToResponseDTO(expense))
         .orElseThrow(() -> new RessourceNotFoundException(id));
   }
 
@@ -89,13 +90,13 @@ public class ExpenseService {
     Expense foundExpense =
         expenseRepository.findById(id).orElseThrow(() -> new RessourceNotFoundException(id));
 
-    convertToExpense(expenseRequest, foundExpense);
+    ConvertDTOs.convertToExpense(expenseRequest, foundExpense);
 
     // Save to DB
     Expense saved = expenseRepository.save(foundExpense);
 
     // Map saved entity to response DTO
-    return convertToResponseDTO(saved);
+    return ConvertDTOs.convertToResponseDTO(saved);
   }
 
   public void deleteExpense(UUID id) {
@@ -104,31 +105,5 @@ public class ExpenseService {
         expenseRepository.findById(id).orElseThrow(() -> new RessourceNotFoundException(id));
 
     expenseRepository.deleteById(expense.getId());
-  }
-
-  private ExpenseResponse convertToResponseDTO(Expense expense) {
-
-    ExpenseResponse expenseResponse =
-        new ExpenseResponse(
-            expense.getId(),
-            expense.getAmount(),
-            expense.getName(),
-            expense.getCategory().toString(),
-            expense.getDate(),
-            expense.getCreatedAt(),
-            expense.getUpdatedAt());
-
-    return expenseResponse;
-  }
-
-  private Expense convertToExpense(ExpenseRequest expenseRequest, Expense expense) {
-
-    expense.setAmount(expenseRequest.getAmount());
-    expense.setCategory(ExpenseCategory.valueOf(expenseRequest.getCategory().toUpperCase()));
-    expense.setDescription(expenseRequest.getDescription());
-    expense.setName(expenseRequest.getName());
-    expense.setDate(expenseRequest.getDate());
-
-    return expense;
   }
 }

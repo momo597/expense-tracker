@@ -16,6 +16,8 @@ public class ExpenseResponse {
 
   private LocalDate date;
 
+  private String description;
+
   private LocalDate createdAt;
 
   private LocalDate updatedAt;
@@ -28,6 +30,7 @@ public class ExpenseResponse {
       String name,
       String category,
       LocalDate date,
+      String description,
       LocalDate createdAt,
       LocalDate updatedAt) {
     this.id = id;
@@ -35,6 +38,7 @@ public class ExpenseResponse {
     this.name = name;
     this.category = category;
     this.date = date;
+    this.description = description;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
@@ -77,6 +81,14 @@ public class ExpenseResponse {
 
   public void setDate(LocalDate date) {
     this.date = date;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public LocalDate getCreatedAt() {

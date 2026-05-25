@@ -30,6 +30,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 @ExtendWith(MockitoExtension.class)
 public class ExpenseServiceTest {
@@ -77,6 +78,7 @@ public class ExpenseServiceTest {
     verify(expenseRepository).save(any(Expense.class));
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   void getAllExpenses_shouldReturnAllExpenses_ifTheyExist() {
 
@@ -95,11 +97,7 @@ public class ExpenseServiceTest {
 
     Page<Expense> expensePage = new PageImpl<>(List.of(expense1), pageable, 1);
 
-    when(expenseRepository.findFiltered(
-            ExpenseCategory.ENTERTAINMENT,
-            LocalDate.of(2026, 5, 1),
-            LocalDate.of(2026, 5, 30),
-            pageable))
+    when(expenseRepository.findAll(any(Specification.class), any(Pageable.class)))
         .thenReturn(expensePage);
 
     Page<ExpenseResponse> result =
@@ -113,12 +111,7 @@ public class ExpenseServiceTest {
     assertEquals("ENTERTAINMENT", result.getContent().get(0).getCategory());
     assertEquals("Netflix subscription", result.getContent().get(0).getName());
 
-    verify(expenseRepository)
-        .findFiltered(
-            ExpenseCategory.ENTERTAINMENT,
-            LocalDate.of(2026, 5, 1),
-            LocalDate.of(2026, 5, 30),
-            pageable);
+    verify(expenseRepository).findAll(any(Specification.class), any(Pageable.class));
   }
 
   @Test

@@ -7,13 +7,14 @@ import com.momo.expense_tracker.exception.RessourceNotFoundException;
 import com.momo.expense_tracker.model.Expense;
 import com.momo.expense_tracker.repository.ExpenseRepository;
 import com.momo.expense_tracker.utilities.ConvertDTOs;
-import com.momo.expense_tracker.utilities.ExpenseCategory;
+import com.momo.expense_tracker.utilities.ExpenseSpecifications;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,12 +44,13 @@ public class ExpenseService {
   public Page<ExpenseResponse> getAllExpenses(
       String category, LocalDate startDate, LocalDate endDate, Pageable pageable) {
 
-    Page<Expense> expenses =
-        expenseRepository.findFiltered(
-            category != null ? ExpenseCategory.valueOf(category.toUpperCase()) : null,
-            startDate,
-            endDate,
-            pageable);
+    Specification<Expense> spec =
+        Specification.where(
+            ExpenseSpecifications.hasCategory(category)
+                .and(ExpenseSpecifications.dateGreaterThanEqual(startDate))
+                .and(ExpenseSpecifications.dateLessThan(endDate)));
+
+    Page<Expense> expenses = expenseRepository.findAll(spec, pageable);
 
     return expenses.map(expense -> ConvertDTOs.convertToResponseDTO(expense));
   }

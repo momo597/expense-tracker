@@ -1,30 +1,18 @@
 package com.momo.expense_tracker.repository;
 
 import com.momo.expense_tracker.model.Expense;
-import com.momo.expense_tracker.utilities.ExpenseCategory;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-public interface ExpenseRepository extends JpaRepository<Expense, UUID> {
+public interface ExpenseRepository
+    extends JpaRepository<Expense, UUID>, JpaSpecificationExecutor<Expense> {
 
   @Query(
-      "SELECT e FROM Expense e WHERE "
-          + "(:category IS NULL OR e.category = :category) AND "
-          + "(:startDate IS NULL OR e.date >= :startDate) AND "
-          + "(:endDate IS NULL OR e.date <= :endDate)")
-  Page<Expense> findFiltered(
-      @Param("category") ExpenseCategory category,
-      @Param("startDate") LocalDate startDate,
-      @Param("endDate") LocalDate endDate,
-      Pageable pageable);
-
-  @Query("SELECT e.category, SUM(e.amount), COUNT(e) FROM Expense e " + "GROUP BY e.category")
+      "SELECT e.category, SUM(e.amount), COUNT(e) FROM Expense e "
+          + "GROUP BY e.category ORDER BY e.category ASC")
   List<Object[]> summaryByCategory();
 
   @Query(

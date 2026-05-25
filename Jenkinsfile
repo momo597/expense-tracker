@@ -13,9 +13,15 @@ pipeline{
             }
         }
 
-        stage('Test'){
+        stage('Unit Testing'){
             steps{
-                sh "mvn clean verify"
+                sh "mvn test"
+            }
+        }
+
+         stage('Integration Testing'){
+            steps{
+                sh "mvn verify -DskipTests"
             }
         }
 
@@ -30,7 +36,7 @@ pipeline{
 
     post{
         always{
-            junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+            junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml, **/target/failsafe-reports/*.xml'
         }
     }
 }

@@ -20,6 +20,11 @@ pipeline{
         }
 
          stage('Integration Testing'){
+            environment{
+                DOCKER_HOST = 'tcp://host.docker.internal:2375'
+                TESTCONTAINERS_HOST_OVERRIDE = 'host.docker.internal'
+                TESTCONTAINERS_RYUK_DISABLED = 'true'
+            }
             steps{
                 sh "mvn verify -DskipSurefireTests"
             }

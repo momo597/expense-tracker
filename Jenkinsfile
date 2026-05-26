@@ -31,6 +31,9 @@ pipeline{
         }
 
         stage('Docker Build'){
+            environment{
+                DOCKER_HOST = 'tcp://host.docker.internal:2375'
+            }
             steps{
                 script{
                     docker.build("expense-tracker:${env.BUILD_NUMBER}")

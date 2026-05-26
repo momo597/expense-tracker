@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -26,6 +28,7 @@ public class ExpenseService {
     this.expenseRepository = expenseRepository;
   }
 
+  @CacheEvict(value = "expense-summary", allEntries = true)
   public ExpenseResponse createExpense(ExpenseRequest expenseRequest) {
 
     // Map request DTO to entity
@@ -39,6 +42,12 @@ public class ExpenseService {
     // Map saved entity to response DTO
 
     return ConvertDTOs.convertToResponseDTO(saved);
+  }
+
+  @CacheEvict(value = "expense-summary", allEntries = true)
+  public List<ExpenseResponse> createMultipleExpenses(List<ExpenseRequest> expenseRequests) {
+
+    return expenseRequests.stream().map(expenseRequest -> createExpense(expenseRequest)).toList();
   }
 
   public Page<ExpenseResponse> getAllExpenses(
@@ -62,6 +71,7 @@ public class ExpenseService {
         .orElseThrow(() -> new RessourceNotFoundException(id));
   }
 
+  @Cacheable(value = "expense-summary", key = "#option", condition = "#option != null")
   public List<SummaryResponse> getSummary(String option) {
 
     if (option == null) throw new IllegalArgumentException("Option cannot be null");
@@ -85,6 +95,7 @@ public class ExpenseService {
     }
   }
 
+  @CacheEvict(value = "expense-summary", allEntries = true)
   public ExpenseResponse updateExpense(UUID id, ExpenseRequest expenseRequest) {
 
     // Map request DTO to entity
@@ -101,6 +112,7 @@ public class ExpenseService {
     return ConvertDTOs.convertToResponseDTO(saved);
   }
 
+  @CacheEvict(value = "expense-summary", allEntries = true)
   public void deleteExpense(UUID id) {
 
     Expense expense =

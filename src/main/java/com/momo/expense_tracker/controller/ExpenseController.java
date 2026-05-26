@@ -64,6 +64,14 @@ public class ExpenseController {
         .body(expenseService.createExpense(expenseRequest));
   }
 
+  @PostMapping("/batch")
+  public ResponseEntity<List<ExpenseResponse>> createMultipleExpenses(
+      @Valid @RequestBody List<ExpenseRequest> expenseRequests) {
+
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(expenseService.createMultipleExpenses(expenseRequests));
+  }
+
   @PutMapping("/{id}")
   public ResponseEntity<ExpenseResponse> updateExpense(
       @PathVariable UUID id, @Valid @RequestBody ExpenseRequest expenseRequest) {

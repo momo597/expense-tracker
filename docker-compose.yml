@@ -21,8 +21,10 @@ services:
       DB_NAME: ${DB_NAME:-expenses}
       DB_USERNAME: ${DB_USERNAME:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      SPRING_DATA_REDIS_HOST: redis
     depends_on:
       - db
+      - redis
 
   jenkins:
     build:
@@ -48,6 +50,11 @@ services:
       - "3000:3000"
     environment:
       GF_SECURITY_ADMIN_PASSWORD: admin
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
 
 volumes:
   pgdata:

@@ -1,8 +1,9 @@
 package com.momo.expense_tracker.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class SummaryResponse {
+public class SummaryResponse implements Serializable {
 
   private String label;
 
